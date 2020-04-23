@@ -1,3 +1,9 @@
+#Project specific folder
+old/
+notebooks/old/
+python/epidemic_model/old/
+saved_models/old/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
