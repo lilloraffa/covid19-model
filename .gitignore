@@ -4,6 +4,9 @@ notebooks/old/
 python/epidemic_model/old/
 saved_models/old/
 
+#OS 
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

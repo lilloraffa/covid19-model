@@ -80,41 +80,6 @@ class ModelOptimizer:
         finetuned_params, ex = getParamList(exclude = (self.exclude_param_finetuner + ['rg', 'ra', 'rg_period', 'ra_period']))
         self.windowParamOptimizer(model_names, self.window_len, delta_perc = 0.01, opt_max_iter = 100, window_params = window_params, finetuned_params = finetuned_params, bOptFinetuner = False, bprint=True)
 
-
-        """
-        window_params, ex = getParamList(param_list_init = ['rg_period', 'ra_period', 'beta', 'beta_gcn', 'gamma', 't1', 'tgi2', 'tgn2', 'ta2'], exclude = (self.exclude_param_window))
-        bWindow = len([x for x in['t1', 'tgi2', 'tgn2', 'ta2'] if x in window_params])>=1
-        if bWindow: self.windowParamOptimizer(model_names, self.window_len, delta_perc = 0.01, opt_max_iter = 100, window_params = window_params, finetuned_params = finetuned_params, bOptFinetuner = False, bprint=True)
-
-        window_params, ex = getParamList(param_list_init = ['rg_period', 'ra_period', 'alpha', 'beta', 'beta_gcn', 'gamma', 'Igs_t0', 'Ias_t0'], exclude = (self.exclude_param_window))
-        self.windowParamOptimizer(model_names, self.window_len, delta_perc = 0.01, opt_max_iter = 100, window_params = window_params, bOptFinetuner = False, bprint=True)
-        """
-        
-        """
-        finetuned_params, ex = getParamList(exclude = (self.exclude_param_finetuner + ['rg_period', 'ra_period']))
-        #finetuned_params, ex = getParamList(param_list_init = ['rg', 'ra', 'beta', 'beta_gcn', 'gamma'], exclude = (self.exclude_param_finetuner + ['rg_period', 'ra_period']))
-        #self.opt_model = self.gridAllOptParamFinetuner(self.opt_model, model_names, finetuned_params = finetuned_params, deltas = [0.1], grid_steps = 2, opt_max_iter = 100, bprint = True)
-        
-        finetuned_params, ex = getParamList(param_list_init = ['rg', 'ra', 'beta', 'beta_gcn', 'gamma', 't1', 'tgi2', 'tgn2', 'ta2'], exclude = (self.exclude_param_finetuner + ['rg_period', 'ra_period']))
-        bFinetuner2 = len([x for x in['t1', 'tgi2', 'tgn2', 'ta2'] if x in finetuned_params])>=1
-        if bFinetuner2: self.opt_model = self.gridAllOptParamFinetuner(self.opt_model, model_names, finetuned_params = finetuned_params, deltas = [0.1, 0.05, 0.01], grid_steps = 3, opt_max_iter = 100, bprint = True)
-
-        finetuned_params, ex = getParamList(param_list_init = ['rg', 'ra', 'alpha', 'beta', 'beta_gcn', 'gamma', 'Igs_t0', 'Ias_t0'], exclude = (self.exclude_param_finetuner + ['rg_period', 'ra_period']))
-        self.opt_model = self.gridAllOptParamFinetuner(self.opt_model, model_names, finetuned_params = finetuned_params, deltas = [0.1, 0.05, 0.01], grid_steps = 3, opt_max_iter = 100, bprint = True)
-
-        final_time = datetime.now()
-        print("**** Model AllOptParamFinetuner ended at: " + str(final_time))
-        print("\t in: " + str(final_time - initial_time_new))
-        
-
-        initial_time_new = final_time
-        print("**** Model WindowOptimizer started at: " + str(initial_time_new))
-        initial_time_new = final_time
-        model_names = ['tot']
-        finetuned_params, ex = getParamList(exclude = (self.exclude_param_window + ['rg', 'ra', 'rg_period', 'ra_period']))
-        self.windowParamOptimizer(model_names, self.window_len, delta_perc = 0.01, opt_max_iter = 100, finetuned_params = finetuned_params, bOptFinetuner = True, bprint=True)
-        """
-
         final_time = datetime.now()
         print("**** Model WindowOptimizer ended at: " + str(final_time))
         print("\t in: " + str(final_time - initial_time_new))
@@ -156,7 +121,6 @@ class ModelOptimizer:
         
     
     def optModelSel(self, mod_name, bprint=False):
-        #print("mod: %s - %s" %(mod_name, str(np.asarray(self.model_runs)[:,self.dic_mod_name[mod_name]].astype(float))))
         mod_sel_i = np.nanargmin(np.asarray(self.model_runs)[:,self.dic_mod_name[mod_name]].astype(float))
         return self.model_runs[mod_sel_i][8]
 
@@ -179,8 +143,6 @@ class ModelOptimizer:
 
     def gridAllOptParamFinetuner(self, optmodels_in, model_names, finetuned_params = None, deltas = [0.1, 0.05, 0.01], grid_steps = 2, opt_max_iter = 100, bprint = False, err_perc_tres = 0.01):
         initial_time = datetime.now()
-        #if self.opt_model_initial is None:
-        #    self.opt_model_initial = self.opt_model.copy()
         print("****** Started OptParamFinetuner ******", model_names, finetuned_params)
         mod_generic = Model()
         optmodels = optmodels_in.copy()
@@ -195,10 +157,7 @@ class ModelOptimizer:
         if finetuned_params is not None:
             finetuned_params_final = finetuned_params
         else:
-            #finetuned_params_final = ['rg', 'ra', 'alpha', 'beta', 'beta_gcn', 'gamma', 'tgi2', 'tgn2']
-            #finetuned_params_final = ['rg', 'ra', 'alpha', 'beta', 'beta_gcn', 'gamma', 't1', 'tgi2', 'tgn2', 'ta2']
             finetuned_params_final = ['rg', 'ra', 'alpha', 'beta', 'beta_gcn', 'gamma', 't1', 'tgi2', 'tgn2', 'ta2', 'Igs_t0', 'Ias_t0']
-            #finetuned_params_final = ['rg', 'ra', 'alpha', 'beta', 'beta_gcn', 'gamma']
             
         for param in finetuned_params_final:
                 params[param] = grid_steps
@@ -232,6 +191,9 @@ class ModelOptimizer:
                     elif param in ['rg_period', 'ra_period']:     
                         grid_param.setGridList(Param(param), [param_val])
                     else: 
+                        if param in ['alpha', 'gamma', 'beta', 'beta_gcn']:
+                            if param_val >= 1: param_val = 0.9999
+                            elif param_val <=0: param_val = 0.00000001
                         grid_param.setGrid(Param(param), grid_avg = param_val, grid_min = (param_val*(1-delta_perc)), grid_max = (param_val*(1+delta_perc)), steps = params[param])
 
                 #Find the optimal models with new grid
@@ -241,7 +203,6 @@ class ModelOptimizer:
                 err_prev = optmodels[model_name]["err_" + model_name]
                 err_new = mod_optimizer.opt_model[model_name]["err_" + model_name]
                 err_delta = err_prev if err_new == 0.0 else (err_prev - err_new)/err_new
-                #print("Calc. model: ", delta_perc, iIter, iIterCycle, iIterCycle2, datetime.now())
             
                 if err_delta > err_perc_tres:
                     optmodels[model_name] = mod_optimizer.opt_model[model_name].copy()
@@ -274,7 +235,6 @@ class ModelOptimizer:
 
 
         for param in params.keys():
-            #param_val = getattr(model, param)
             param_val = params[param]
             if param in param_list:
                 if str(param) in ['t1', 'tgi2', 'tgn2', 'ta2']:
@@ -300,6 +260,9 @@ class ModelOptimizer:
                 else: 
                     #param_min = (param_val*(1-delta_perc))
                     #param_max = (param_val*(1+delta_perc))
+                    if param in ['alpha', 'gamma', 'beta', 'beta_gcn']:
+                        if param_val >= 1: param_val = 0.9999
+                        elif param_val <=0: param_val = 0.00000001
                     if param_val == 0:
                         param_min = 0
                         param_val = 1

@@ -8,7 +8,7 @@ calibration only, mathematical details of the model and a general description of
 In what follows, I'll consider only the model optimized for a composite error measure, considering major KPIs involved.
 Moreover, I've also estimated the model for every Italian region to study differences in estimated parameters and in the
 evolution of the contagion. For practical reason, I'll focus on only two regions, Emilia Romagna, Lombardia and Piemonte,
-and I'll post graphs and analysis by region in the following [Jupyter Notebook](xxxx) that I'll try to update on a regular 
+and I'll post graphs and analysis by region in the following [Jupyter Notebook](https://github.com/lilloraffa/covid19-model/blob/master/notebooks/Covid19%20Evolution%20Model%20-%20Regional%20Analysis.ipynb) that I'll try to update on a regular 
 basis.
 
 In general, the dynamics resulting from the Italy model may be affected by the different "maturity" and 

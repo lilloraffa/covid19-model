@@ -451,10 +451,8 @@ class Model:
         rg = self.rg
         ra = self.ra
         if self.rg_period is not None:
-            #print("rg_period: ", self.rg_period, self.t)
             rg = self.rg_period[self.t]
         if self.ra_period is not None:
-            #print("ra_period: ", self.ra_period, self.t)
             ra = self.ra_period[self.t]
             
         rg_t = rg * (self.Popi_t[self.t] / self.Pop_tot)
@@ -517,23 +515,13 @@ class Model:
     def run(self, n):
         #self.modstats(self.t)
         if self.rg_period is not None:
-            print("initial length rg_period: ", str(len(self.rg_period)))
             rg_len = len(self.rg_period)
-            #increase_len = rg_len - 1 + n
             rg_initial = [0 for x in range(0, rg_len + n)]
-            print(rg_len, str(len(rg_initial)))
             self.rg_period = list(map(lambda x, i: self.rg_period[i] if i in range(0, rg_len) else self.rg_period[rg_len - 1], rg_initial, range(0,len(rg_initial))))
-            print("final length rg_period: ", str(len(self.rg_period)))
         if self.ra_period is not None:
-            print("initial length rg_period: ", str(len(self.ra_period)))
             ra_len = len(self.ra_period)
-            #increase_len = len(self.Igci_t) - 1 + n
             ra_initial = [0 for x in range(0, ra_len + n)]
             self.ra_period = list(map(lambda x, i: self.ra_period[i] if i in range(0, ra_len) else self.ra_period[ra_len - 1], ra_initial, range(0,len(ra_initial))))
-            print("final length ra_period: ", str(len(self.ra_period)))
         
         for i in range (0,n):
-            #print("Step %d -> %d" %(i, i+1))
             self.stepforward()
-            #print(i, len(self.Igs_t), len(self.Igcn_t), len(self.Igci_t), len(self.Ias_t), len(self.Ggci_t), len(self.Ggcn_t), len(self.Gas_t), len(self.M_t))
-            #self.modstats(self.t)
